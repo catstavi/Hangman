@@ -9,6 +9,9 @@
 # PROBLEM WITH WORD GUESS
 require "colorize"
 
+#class Game has class Board which knows how to draw a board from an array of strings
+#possible further use drawing chess, checkers, mastermind etc
+
 class Game
 
   def initialize()
@@ -54,7 +57,7 @@ class Hangman < Game
     @gameover = false
     @colors = which_colors(String.colors)
     @body_parts = ["(_)", "/", "|", "\\", "|", "\\", "/"]
-    @rows = [" |     __________  ",
+    rows = [" |     __________  ",
              " |     |/       |  ",
              " |     |           ",
              " |     |           ",
@@ -62,7 +65,7 @@ class Hangman < Game
              " |     |           ",
              " |     |           ",
              " | ____|___        "]
-    @board = Board.new(@rows)
+    @board = Board.new(rows)
   end
 
   def run
@@ -83,8 +86,7 @@ class Hangman < Game
   end
 
   def which_colors(colors)
-    colors.delete(:black)
-    colors.delete(:white)
+    colors.delete(:black) #stops 'invisible' body parts on standard black background
     return colors
   end
 
@@ -167,9 +169,9 @@ class Hangman < Game
   end
 
   def win
-      if (@letters - @guessed_letters).empty?
+    if (@letters - @guessed_letters).empty?
       @board.draw
-      puts "You WIN! The word was #{@word}"
+      puts "You WIN! The word was #{@word}."
       @gameover = true
     end
   end
@@ -179,6 +181,9 @@ class Hangman < Game
       @body_parts[index] = @body_parts[index].colorize(colors.sample)
     end
   end
+
+#alters 'rows' attr of board to include characters representing body parts. rows is permanently altered
+# so we're able to add just one part at a time
 
   def add_body_part
     part_index = @body_part_count - 1
