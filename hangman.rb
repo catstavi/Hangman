@@ -44,7 +44,7 @@ class Hangman < Game
     dictionary = %w[cat hat mat flat red blue green sky moo moon hope hopeful hopefulness shout grout
     doubt axiom bagpipes boxcar gazebo fixable buggalo bookworm haphazard hazard galaxy fish trout salmon injury
     advocate joyful juicy drinkable kazoo nightclub microwave oxygen carbon hyphen hypnosis khaki kayak pajama trousers
-    pants tophat meow giraffe elephant vortex wizard staff life zombie youth elder gnarly rhythm, line queue sphynx psyche
+    pants tophat meow giraffe elephant vortex wizard staff life zombie youth elder gnarly rhythm line queue sphynx psyche
     rickshaw mouth eyeball football silverwear spoon doormat rainbow skyscraper knight desk build love glove shove hair jacket
     kitten puppy snail raptor eagle sweater shoelace zipper sandal]
     @word = dictionary.sample.upcase
@@ -74,7 +74,7 @@ class Hangman < Game
       puts
       display_guesses
       2.times { puts }
-      guess_letter
+      accept_guess
       puts "You've made #{@body_part_count} wrong guesses."
       win
       lose
@@ -112,7 +112,7 @@ class Hangman < Game
 
   def word_guess(guess)
     if guess == word
-      win
+      guess.split(//).each { |l| @guessed_letters << l }
     else
       wrong_guess
     end
@@ -141,7 +141,7 @@ class Hangman < Game
   end
 
 
-  def guess_letter
+  def accept_guess
     loop do
       print "> "
       guess = gets.chomp.upcase
@@ -167,7 +167,7 @@ class Hangman < Game
   end
 
   def win
-    if (@letters - @guessed_letters).empty?
+      if (@letters - @guessed_letters).empty?
       @board.draw
       puts "You WIN! The word was #{@word}"
       @gameover = true
